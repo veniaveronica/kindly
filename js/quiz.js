@@ -230,6 +230,10 @@ function renderQuestion() {
     feedbackBox.innerHTML = '';
   }
 
+  // Hide the next button when rendering a new question
+  const nextBtnContainer = document.getElementById('nextBtnContainer');
+  if (nextBtnContainer) nextBtnContainer.style.display = 'none';
+
 }
 
 let autoNextTimeout;
@@ -250,13 +254,20 @@ function selectAnswer(index) {
 
   renderQuestion();
   
-  // Auto-next logic
-  clearAutoNext();
-
-  autoNextTimeout = setTimeout(() => {
-    clearAutoNext();
-    goNext();
-  }, 1500); // Increased timeout to 1.5s to let users read the feedback and hear the sound
+  // Show Next button instead of auto-transition
+  const isLast = (currentQuestion === quizQuestions.length - 1);
+  const nextBtnContainer = document.getElementById('nextBtnContainer');
+  if (nextBtnContainer) {
+    const nextBtn = nextBtnContainer.querySelector('button');
+    if (isLast) {
+      nextBtn.innerHTML = 'Finish Quiz <i class="bi bi-check-circle-fill ms-1"></i>';
+      nextBtn.className = 'btn btn-success px-5 fw-bold shadow-sm rounded-pill';
+    } else {
+      nextBtn.innerHTML = 'Next Question <i class="bi bi-arrow-right ms-1"></i>';
+      nextBtn.className = 'btn btn-kindly-primary px-5 fw-bold shadow-sm rounded-pill';
+    }
+    nextBtnContainer.style.display = 'block';
+  }
 }
 
 function goPrev() {
