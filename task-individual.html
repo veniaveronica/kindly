@@ -234,6 +234,12 @@
           const alertBox = document.getElementById('studentStatusAlert');
           alertBox.style.display = 'flex';
           
+          // Sembunyikan tombol rekam dan submit agar tidak bisa dikirim ulang (1x saja)
+          const recorderWrap = document.querySelector('.voice-recorder-wrap');
+          if(recorderWrap) recorderWrap.style.display = 'none';
+          const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
+          if(btnSubmit) btnSubmit.style.display = 'none';
+          
           if (studentSub.individual_score !== null && studentSub.individual_score !== undefined) {
              alertBox.style.backgroundColor = '#d1fae5';
              alertBox.style.color = '#065f46';
@@ -285,10 +291,9 @@
         })
       });
       document.body.style.cursor = 'default';
-      
-      alert('Sukses! Tugas Individu kamu telah terkirim ke server. Mari kita lihat hasilnya di Teacher Panel!');
-      window.location.href = 'teacher.html';
-    } catch (e) {
+            alert('Sukses! Tugas Individu kamu telah terkirim ke server. Mohon tunggu penilaian dari guru.');
+      // Refresh the page to update the status
+      window.location.reload();    } catch (e) {
       document.body.style.cursor = 'default';
       alert('Gagal mengirim tugas. Pastikan internetmu terhubung.');
       console.error(e);
