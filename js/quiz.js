@@ -7,7 +7,7 @@
 const quizQuestions = [
   {
     difficulty: "hard",
-    context: "<b>Story:</b> Sarah is annoyed because her classmate, Maya, didn't reply to her text. Sarah posts on her Instagram Story: "SOME PEOPLE ARE SO ARROGANT AND FAKE! IGNORING TEXTS BUT ACTIVE ON SOCIAL MEDIA. WE MUST CANCEL THEM!" Many classmates start sending hate messages to Maya. Later, they find out Maya was at the hospital visiting a critically ill relative.",
+    context: "<b>Story:</b> Sarah is annoyed because her classmate, Maya, didn't reply to her text. Sarah posts on her Instagram Story: 'SOME PEOPLE ARE SO ARROGANT AND FAKE! IGNORING TEXTS BUT ACTIVE ON SOCIAL MEDIA. WE MUST CANCEL THEM!' Many classmates start sending hate messages to Maya. Later, they find out Maya was at the hospital visiting a critically ill relative.",
     question: "If someone writes a hortatory exposition about this incident, what is the most logical and critical argument to include?",
     options: [
       "Social media must be completely banned for all teenagers to stop any potential drama.",
