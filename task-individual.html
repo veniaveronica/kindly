@@ -291,6 +291,10 @@
       }
     } catch(e) {}
     
+    const topicEl = document.querySelector('input[name="topicSelection"]:checked');
+    const topic = topicEl ? "Topic " + topicEl.value : null;
+    const scriptDraft = document.getElementById('scriptDraft') ? document.getElementById('scriptDraft').value.trim() : null;
+
     try {
       // Save to Neon Database via API
       document.body.style.cursor = 'wait';
@@ -300,7 +304,9 @@
         body: JSON.stringify({
           name: name,
           className: className,
-          audioData: audioData
+          audioData: audioData,
+          topic: topic,
+          scriptDraft: scriptDraft
         })
       });
       document.body.style.cursor = 'default';

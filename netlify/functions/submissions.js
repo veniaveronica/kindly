@@ -17,6 +17,10 @@ exports.handler = async (event, context) => {
         submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
+    
+    // Add columns safely for existing tables
+    await sql`ALTER TABLE kindly_submissions ADD COLUMN IF NOT EXISTS topic VARCHAR(50)`;
+    await sql`ALTER TABLE kindly_submissions ADD COLUMN IF NOT EXISTS script_draft TEXT`;
 
     const method = event.httpMethod;
 
@@ -29,7 +33,7 @@ exports.handler = async (event, context) => {
     else if (method === 'POST') {
       // Student submits quiz or audio
       const body = JSON.parse(event.body);
-      const { name, className, quizScore, audioData } = body;
+      const { name, className, quizScore, audioData, topic, scriptDraft } = body;
       
       // Check if student already exists in database
       const existing = await sql`SELECT id FROM kindly_submissions WHERE LOWER(name) = LOWER(${name}) LIMIT 1`;
@@ -42,11 +46,17 @@ exports.handler = async (event, context) => {
         if (audioData !== undefined && audioData !== null) {
           await sql`UPDATE kindly_submissions SET audio_data = ${audioData} WHERE id = ${existing[0].id}`;
         }
+        if (topic !== undefined && topic !== null) {
+          await sql`UPDATE kindly_submissions SET topic = ${topic} WHERE id = ${existing[0].id}`;
+        }
+        if (scriptDraft !== undefined && scriptDraft !== null) {
+          await sql`UPDATE kindly_submissions SET script_draft = ${scriptDraft} WHERE id = ${existing[0].id}`;
+        }
       } else {
         // Insert new student
         await sql`
-          INSERT INTO kindly_submissions (name, class_name, quiz_score, audio_data)
-          VALUES (${name}, ${className}, ${quizScore || null}, ${audioData || null})
+          INSERT INTO kindly_submissions (name, class_name, quiz_score, audio_data, topic, script_draft)
+          VALUES (${name}, ${className}, ${quizScore || null}, ${audioData || null}, ${topic || null}, ${scriptDraft || null})
         `;
       }
       return { statusCode: 200, body: JSON.stringify({ message: 'Saved successfully!' }) };
