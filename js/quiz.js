@@ -6,134 +6,84 @@
 
 const quizQuestions = [
   {
-    difficulty: "hard",
-    context: "<b>Story:</b> Sarah is annoyed because her classmate, Maya, didn't reply to her text. Sarah posts on her Instagram Story: \"SOME PEOPLE ARE SO ARROGANT AND FAKE! IGNORING TEXTS BUT ACTIVE ON SOCIAL MEDIA. WE MUST CANCEL THEM!\" Many classmates start sending hate messages to Maya. Later, they find out Maya was at the hospital visiting a critically ill relative.",
-    question: "If someone writes a hortatory exposition about this incident, what is the most logical and critical argument to include?",
-    options: [
-      "Social media should be banned for high school students to prevent drama.",
-      "Using ALL CAPS is an effective way to show how genuinely angry you are.",
-      "Making assumptions and publicly shaming someone without verification can cause irreversible emotional damage.",
-      "Maya should have prioritized replying to the text even if she was at the hospital."
-    ],
-    correct: 2,
-    explanation: "Argument C targets the root of the netiquette breach: impulsive public shaming based on assumptions. It provides a strong, objective reason (emotional damage) rather than an extreme reaction like banning social media."
+    difficulty: "medium",
+    context: "<b>Text:</b> Being on time is a beautiful social ethic and one of great importance. If this fails, invite the parent to school. By closing the gates, the school is behaving cruelly.",
+    question: "What should the school do if a student can't stop his/her habit to come late to school?",
+    options: ["Punish him/her", "Shut him/her out", "Fail him/her", "Talk to his/her parents"],
+    correct: 3,
+    explanation: "As stated in the text, if warnings fail, the school should invite the parents instead of shutting the student out."
   },
   {
     difficulty: "medium",
-    context: "<b>Story:</b> A few years ago, Budi made a harsh, offensive joke about a minority group on Twitter. Today, he is applying for a prestigious scholarship. The committee finds the old tweet, and Budi's application is rejected. Budi argues that it's unfair because 'it happened a long time ago and was just a joke.'",
-    question: "A hortatory exposition text titled 'The Permanence of the Internet' uses Budi's story as evidence. Which 'Recommendation' best concludes this text?",
-    options: [
-      "Therefore, the scholarship committee should ignore applicants' social media histories.",
-      "Thus, we must be extremely cautious about what we post, as our digital footprint is permanent and can impact our real-world future.",
-      "In conclusion, Budi should delete his Twitter account immediately.",
-      "So, you should always create fake anonymous accounts to post offensive jokes online."
-    ],
-    correct: 1,
-    explanation: "A strong recommendation (B) provides a universal lesson drawn from the argument. It advises the reader on how to act moving forward (be cautious) based on the evidence presented (digital footprint permanence)."
+    context: "<b>Text:</b> Inner discipline, one that comes from an understanding of the set rules and regulation, is the highest form of behavior. Most excellent schools try to instill this.",
+    question: "What does the writer think to be “the highest form of behaviour”?",
+    options: ["Respect for one another", "Not being late to school", "Understanding the regulations", "Inner discipline"],
+    correct: 3,
+    explanation: "The text explicitly states that inner discipline is the highest form of behavior."
   },
   {
     difficulty: "medium",
-    context: "<b>Story:</b> In a family WhatsApp group, Uncle Anton forwards a message saying that drinking bleach cures a dangerous new virus. The message ends with 'SEND THIS TO 10 PEOPLE TO SAVE LIVES!' Without fact-checking, cousin Rina forwards it to all her friends.",
-    question: "If you were to write a hortatory text about this situation, which evaluative words would be most effective to describe Rina's action in your argument?",
-    options: [
-      "Fast, responsive, caring",
-      "Reckless, unverified, perilous",
-      "Slow, deliberate, malicious",
-      "Normal, everyday, harmless"
-    ],
-    correct: 1,
-    explanation: "Evaluative words judge the action to persuade the reader. 'Reckless' and 'perilous' accurately critique the danger of spreading unverified medical hoaxes without checking facts."
-  },
-  {
-    difficulty: "hard",
-    context: "<b>Story:</b> At a sleepover, Dina takes a funny but embarrassing picture of her best friend, Siti, who is drooling while asleep. Dina posts it on TikTok without asking Siti. The video goes viral. When Siti finds out, she is humiliated. Dina defends herself saying, 'It was just a joke, don't be so sensitive.'",
-    question: "In a hortatory exposition text about 'Digital Consent,' how would you critically evaluate Dina's defense?",
-    options: [
-      "Dina's defense is valid because the internet is meant for entertaining content.",
-      "Dina's defense is flawed because consent is mandatory regardless of the creator's humorous intent; the subject's dignity takes priority.",
-      "Siti should learn to accept jokes because the viral video made Dina popular.",
-      "The video going viral proves that Dina made the right choice for her content."
-    ],
-    correct: 1,
-    explanation: "A critical analysis separates intent ('just a joke') from impact (humiliation). It establishes that consent is an absolute prerequisite, dismantling Dina's weak defense."
-  },
-  {
-    difficulty: "hard",
-    context: "<b>Story:</b> A gaming forum is plagued by a user named 'DarkSlayer99' who constantly insults new players, calls them 'trash,' and tells them to quit. When confronted by moderators, DarkSlayer99 argues, 'It's freedom of speech, I can say whatever I want.'",
-    question: "You are writing a thesis for a hortatory text against DarkSlayer99's behavior. Which thesis statement is the most analytical and persuasive?",
-    options: [
-      "Freedom of speech is bad because it allows people to insult others.",
-      "DarkSlayer99 should be banned from the forum forever.",
-      "While freedom of speech is important, it does not provide immunity from the consequences of verbal abuse; thus, toxic behavior in communities must be penalized.",
-      "Games make people violent and angry, which is why people type mean things."
-    ],
-    correct: 2,
-    explanation: "A strong thesis (C) acknowledges the counter-argument (freedom of speech) but firmly overrides it with a nuanced principle (it doesn't equal immunity from consequences), setting up a solid foundation for the arguments."
+    context: "<b>Text:</b> The boarding school also offers a great variety of activities such as arts, sports, and music that allow children to demonstrate and develop specialized skills in their free time.",
+    question: "According to the writer, children in a boarding school can develop specialized skills in…",
+    options: ["Entrepreneurship", "Community service", "Reading", "Music"],
+    correct: 3,
+    explanation: "The text mentions arts, sports, and music as areas where children can develop specialized skills."
   },
   {
     difficulty: "medium",
-    context: "<b>Story:</b> You are drafting an essay to persuade your school to adopt a strict anti-cyberbullying policy. Your notes are: (1) Cyberbullying affects students' academic performance. (2) It causes severe depression. (3) The school must create a safe space.",
-    question: "Which temporal connective sequence best structures these points logically from Arguments to Recommendation?",
-    options: [
-      "First, cyberbullying affects academics. Second, it causes depression. Therefore, the school must create a safe space.",
-      "Although cyberbullying affects academics, it causes depression. However, the school must create a safe space.",
-      "Maybe it affects academics. Perhaps it causes depression. Finally, the school must create a safe space.",
-      "Because it affects academics, it causes depression. Similarly, the school must create a safe space."
-    ],
+    context: "<b>Text:</b> At an early age interacting and communicating with people is very important for a child’s personal life and can be especially helpful for his/her future. In a boarding school, shy children can take advantage of interaction through communal activities.",
+    question: "Why do parents send their children to boarding school? Because…",
+    options: ["It is good for shy children", "Interacting and communicating with people is very important", "It does not allow children to demonstrate excellence", "It is safe and makes children become responsible"],
+    correct: 1,
+    explanation: "The primary reason mentioned is that interacting and communicating with people is very important for a child’s personal life."
+  },
+  {
+    difficulty: "hard",
+    context: "<b>Text:</b> In conclusion although a boarding school may provide good education to many children, it is not recommended for those who are strongly attached to their families.",
+    question: "From the text, we can conclude that…",
+    options: ["The boarding school can be very expensive", "There are good and bad boarding schools", "The boarding school is the solution to our educational problems", "Not everyone thinks that the boarding school is the best educational institution for children"],
+    correct: 3,
+    explanation: "The conclusion highlights that boarding school is not recommended for everyone (especially those attached to families), meaning it is not the best for all children."
+  },
+  {
+    difficulty: "easy",
+    context: "<b>Theory of Exposition:</b> Hortatory Exposition is a type of spoken or written text that is intended to explain the listeners or readers that something should or should not happen or be done.",
+    question: "What is the communicative purpose of hortatory exposition?",
+    options: ["To amuse the readers", "To persuade the reader that something should or should not be the case", "To describe a particular person or thing", "To tell a past event"],
+    correct: 1,
+    explanation: "The main purpose of a hortatory exposition is to persuade the audience that something should or should not be done (recommendation)."
+  },
+  {
+    difficulty: "easy",
+    context: "<b>Generic Structure:</b> An exposition text has specific parts to build its argument clearly and effectively.",
+    question: "Which of the following is the generic structure of a Hortatory Exposition?",
+    options: ["Thesis - Arguments - Recommendation", "Thesis - Arguments - Reiteration", "General Statement - Description", "Orientation - Complication - Resolution"],
     correct: 0,
-    explanation: "'First' and 'Second' clearly list the arguments, while 'Therefore' logically transitions into the concluding recommendation."
-  },
-  {
-    difficulty: "hard",
-    context: "<b>Story:</b> A student writes a petition to the principal: 'We think maybe students should stop using their phones during class because it might distract them. We hope you can consider this if you have time.'",
-    question: "Why does this text fail as a hortatory exposition, and how can it be fixed?",
-    options: [
-      "It lacks arguments; it should add stories about students sleeping in class.",
-      "The modality is too weak and passive; hesitant words like 'maybe' and 'hope' should be replaced with strong imperatives like 'must' and 'strongly urge'.",
-      "It is too aggressive and needs to be much more polite.",
-      "The vocabulary is too advanced for a high school principal."
-    ],
-    correct: 1,
-    explanation: "Hortatory exposition relies on strong modality to persuade and assert authority. Using 'maybe' and 'might' completely undermines the writer's conviction."
-  },
-  {
-    difficulty: "hard",
-    context: "<b>Story:</b> Leo follows only accounts that agree with his political views. One day, he reads a post claiming the rival candidate wants to ban video games. Without doing any research, Leo writes a fiery blog post urging everyone to protest. It turns out the claim was a complete fabrication.",
-    question: "If Leo's blog post is structured as a hortatory exposition, what is its primary critical flaw?",
-    options: [
-      "It lacks a recommendation at the end.",
-      "The thesis and arguments are built on an unverified premise, rendering the entire logical structure of his persuasion invalid.",
-      "It uses too many temporal connectives.",
-      "The vocabulary is too emotional and subjective."
-    ],
-    correct: 1,
-    explanation: "No matter how well-structured an exposition is (thesis, arguments, recommendation), if the foundational premise is factually false, the entire argument collapses."
+    explanation: "Hortatory exposition consists of a Thesis, followed by Arguments, and ends with a Recommendation."
   },
   {
     difficulty: "medium",
-    context: "<b>Story:</b> Nina finds a beautiful poem on an obscure blog. She copies it, posts it on her Instagram with a beautiful aesthetic background, and doesn't credit the author. When praised by her followers, she replies 'Thank you!' taking the credit.",
-    question: "You are writing a hortatory text about Intellectual Property. Which sentence would serve as the strongest supporting argument against Nina's action?",
-    options: [
-      "Firstly, copying someone's work without credit is intellectual theft that deprives the original creator of their rightful recognition.",
-      "Firstly, poetry is hard to write, so Nina should try writing her own.",
-      "Firstly, Instagram is not a place for poems anyway.",
-      "Firstly, nobody reads obscure blogs so the author won't find out."
-    ],
-    correct: 0,
-    explanation: "Argument A addresses the core ethical issue (intellectual theft and lack of recognition), making it a much stronger and universally applicable argument than the others."
+    context: "<b>Analytical vs Hortatory:</b> Both are exposition texts, but they have a distinct difference in their final paragraphs.",
+    question: "What is the difference between analytical and hortatory exposition?",
+    options: ["Analytical ends with recommendation, hortatory ends with reiteration", "Analytical ends with reiteration, hortatory ends with recommendation", "Both end with recommendation", "Both end with reiteration"],
+    correct: 1,
+    explanation: "Analytical exposition concludes with a reiteration (restating the thesis), while hortatory exposition concludes with a recommendation (what should be done)."
   },
   {
-    difficulty: "hard",
-    context: "<b>Story:</b> Doni receives an email from 'AdminInsta' saying his account will be deleted in 24 hours unless he clicks a link and enters his password. Panicking, he does it. The next day, his account is hacked and used to scam his friends.",
-    question: "You want to write a hortatory text warning others. What is the most constructive 'Recommendation' to conclude your text?",
-    options: [
-      "Therefore, you should never use Instagram because it is full of hackers.",
-      "Thus, if you get hacked, you should immediately make a new account.",
-      "Consequently, we must always verify the sender's email address and never click suspicious links, to protect ourselves and our network.",
-      "In conclusion, Doni is gullible and we shouldn't be like him."
-    ],
+    difficulty: "medium",
+    context: "<b>Language Features:</b> Exposition texts often use specific transitional words to connect ideas and arguments smoothly.",
+    question: "Words like 'firstly, secondly, therefore, on the other hand' are examples of...",
+    options: ["Action verbs", "Thinking verbs", "Connectives/Transitions", "Modals"],
     correct: 2,
-    explanation: "A strong recommendation offers a proactive, actionable solution (verifying emails, not clicking links) that addresses the root cause of the issue described in the arguments."
+    explanation: "These words are connectives or transitional words used to organize arguments logically."
+  },
+  {
+    difficulty: "easy",
+    context: "<b>The Final Paragraph:</b> The last part of a hortatory exposition serves a very specific purpose for the reader.",
+    question: "In a hortatory exposition, the recommendation part contains...",
+    options: ["The writer’s opinion about the topic", "The reasons to support the opinion", "What the writer suggests the readers to do", "The summary of the event"],
+    correct: 2,
+    explanation: "The recommendation contains the writer’s suggestion or advice on what the readers should or should not do."
   }
 ];
 
