@@ -204,6 +204,14 @@
       audioChunks = [];
       mediaRecorder.start();
       
+      // Auto-stop after 2 minutes (120000 ms)
+      setTimeout(() => {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          btnStop.click();
+          alert("Waktu habis! Rekaman otomatis dihentikan pada batas maksimal 2 menit agar pengiriman tidak gagal.");
+        }
+      }, 120000);
+      
       // UI Updates
       btnRecord.style.display = 'none';
       btnStop.style.display = 'block';
