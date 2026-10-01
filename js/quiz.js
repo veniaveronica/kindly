@@ -7,13 +7,13 @@
 const quizQuestions = [
   {
     difficulty: "hard",
-    context: "<b>Story:</b> Sarah is annoyed because her classmate, Maya, didn't reply to her text. Sarah posts on her Instagram Story: \"SOME PEOPLE ARE SO ARROGANT AND FAKE! IGNORING TEXTS BUT ACTIVE ON SOCIAL MEDIA. WE MUST CANCEL THEM!\" Many classmates start sending hate messages to Maya. Later, they find out Maya was at the hospital visiting a critically ill relative.",
+    context: "<b>Story:</b> Sarah is annoyed because her classmate, Maya, didn't reply to her text. Sarah posts on her Instagram Story: "SOME PEOPLE ARE SO ARROGANT AND FAKE! IGNORING TEXTS BUT ACTIVE ON SOCIAL MEDIA. WE MUST CANCEL THEM!" Many classmates start sending hate messages to Maya. Later, they find out Maya was at the hospital visiting a critically ill relative.",
     question: "If someone writes a hortatory exposition about this incident, what is the most logical and critical argument to include?",
     options: [
-      "Social media should be banned for high school students to prevent drama.",
-      "Using ALL CAPS is an effective way to show how genuinely angry you are.",
-      "Making assumptions and publicly shaming someone without verification can cause irreversible emotional damage.",
-      "Maya should have prioritized replying to the text even if she was at the hospital."
+      "Social media must be completely banned for all teenagers to stop any potential drama.",
+      "Using ALL CAPS is the most effective and polite way to express your genuine feelings.",
+      "Making assumptions and shaming someone publicly can cause irreversible emotional damage.",
+      "Maya should have prioritized replying to the text regardless of her current situation."
     ],
     correct: 2,
     explanation: "Argument C targets the root of the netiquette breach: impulsive public shaming based on assumptions. It provides a strong, objective reason (emotional damage) rather than an extreme reaction like banning social media."
@@ -23,10 +23,10 @@ const quizQuestions = [
     context: "<b>Story:</b> A few years ago, Budi made a harsh, offensive joke about a minority group on Twitter. Today, he is applying for a prestigious scholarship. The committee finds the old tweet, and Budi's application is rejected. Budi argues that it's unfair because 'it happened a long time ago and was just a joke.'",
     question: "A hortatory exposition text titled 'The Permanence of the Internet' uses Budi's story as evidence. Which 'Recommendation' best concludes this text?",
     options: [
-      "Therefore, the scholarship committee should ignore applicants' social media histories.",
-      "Thus, we must be extremely cautious about what we post, as our digital footprint is permanent and can impact our real-world future.",
-      "In conclusion, Budi should delete his Twitter account immediately.",
-      "So, you should always create fake anonymous accounts to post offensive jokes online."
+      "Therefore, scholarship committees should learn to completely ignore old social media histories.",
+      "Thus, we must be cautious of what we post, as our digital footprint is truly permanent.",
+      "In conclusion, Budi must aggressively delete his Twitter account to solve his current problem.",
+      "So, you should always create multiple anonymous accounts to post any offensive jokes."
     ],
     correct: 1,
     explanation: "A strong recommendation (B) provides a universal lesson drawn from the argument. It advises the reader on how to act moving forward (be cautious) based on the evidence presented (digital footprint permanence)."
@@ -49,10 +49,10 @@ const quizQuestions = [
     context: "<b>Story:</b> At a sleepover, Dina takes a funny but embarrassing picture of her best friend, Siti, who is drooling while asleep. Dina posts it on TikTok without asking Siti. The video goes viral. When Siti finds out, she is humiliated. Dina defends herself saying, 'It was just a joke, don't be so sensitive.'",
     question: "In a hortatory exposition text about 'Digital Consent,' how would you critically evaluate Dina's defense?",
     options: [
-      "Dina's defense is valid because the internet is meant for entertaining content.",
-      "Dina's defense is flawed because consent is mandatory regardless of the creator's humorous intent; the subject's dignity takes priority.",
-      "Siti should learn to accept jokes because the viral video made Dina popular.",
-      "The video going viral proves that Dina made the right choice for her content."
+      "It is perfectly valid since the internet thrives purely on entertaining and humorous content.",
+      "It is deeply flawed because the subject's right to privacy always overrides the creator's intent.",
+      "It makes sense because the viral video ultimately made Dina and Siti much more popular.",
+      "It is totally acceptable since taking photos without permission is a normal trend on TikTok."
     ],
     correct: 1,
     explanation: "A critical analysis separates intent ('just a joke') from impact (humiliation). It establishes that consent is an absolute prerequisite, dismantling Dina's weak defense."
@@ -62,10 +62,10 @@ const quizQuestions = [
     context: "<b>Story:</b> A gaming forum is plagued by a user named 'DarkSlayer99' who constantly insults new players, calls them 'trash,' and tells them to quit. When confronted by moderators, DarkSlayer99 argues, 'It's freedom of speech, I can say whatever I want.'",
     question: "You are writing a thesis for a hortatory text against DarkSlayer99's behavior. Which thesis statement is the most analytical and persuasive?",
     options: [
-      "Freedom of speech is bad because it allows people to insult others.",
-      "DarkSlayer99 should be banned from the forum forever.",
-      "While freedom of speech is important, it does not provide immunity from the consequences of verbal abuse; thus, toxic behavior in communities must be penalized.",
-      "Games make people violent and angry, which is why people type mean things."
+      "Freedom of speech is generally bad because it allows people to insult other innocent gamers.",
+      "Users like DarkSlayer99 should be immediately and permanently banned from the forum.",
+      "Freedom of speech is important, but it does not provide immunity from the consequences of abuse.",
+      "Video games make people incredibly violent, which naturally causes them to type mean things."
     ],
     correct: 2,
     explanation: "A strong thesis (C) acknowledges the counter-argument (freedom of speech) but firmly overrides it with a nuanced principle (it doesn't equal immunity from consequences), setting up a solid foundation for the arguments."
@@ -75,10 +75,10 @@ const quizQuestions = [
     context: "<b>Story:</b> You are drafting an essay to persuade your school to adopt a strict anti-cyberbullying policy. Your notes are: (1) Cyberbullying affects students' academic performance. (2) It causes severe depression. (3) The school must create a safe space.",
     question: "Which temporal connective sequence best structures these points logically from Arguments to Recommendation?",
     options: [
-      "First, cyberbullying affects academics. Second, it causes depression. Therefore, the school must create a safe space.",
-      "Although cyberbullying affects academics, it causes depression. However, the school must create a safe space.",
-      "Maybe it affects academics. Perhaps it causes depression. Finally, the school must create a safe space.",
-      "Because it affects academics, it causes depression. Similarly, the school must create a safe space."
+      "First, it affects academics. Second, it causes depression. Therefore, we must create a safe space.",
+      "Although it affects academics, it causes depression. However, we must create a safe space.",
+      "Maybe it affects academics. Perhaps it causes depression. Finally, we must create a safe space.",
+      "Because it affects academics, it causes depression. Similarly, we must create a safe space."
     ],
     correct: 0,
     explanation: "'First' and 'Second' clearly list the arguments, while 'Therefore' logically transitions into the concluding recommendation."
@@ -88,10 +88,10 @@ const quizQuestions = [
     context: "<b>Story:</b> A student writes a petition to the principal: 'We think maybe students should stop using their phones during class because it might distract them. We hope you can consider this if you have time.'",
     question: "Why does this text fail as a hortatory exposition, and how can it be fixed?",
     options: [
-      "It lacks arguments; it should add stories about students sleeping in class.",
-      "The modality is too weak and passive; hesitant words like 'maybe' and 'hope' should be replaced with strong imperatives like 'must' and 'strongly urge'.",
-      "It is too aggressive and needs to be much more polite.",
-      "The vocabulary is too advanced for a high school principal."
+      "It lacks proper arguments; it should add real stories about lazy students sleeping in class.",
+      "It uses hesitant modality; passive words like 'maybe' should be replaced with strong imperatives.",
+      "It sounds overly aggressive; it desperately needs to be rewritten using much more polite language.",
+      "It is excessively complex; the vocabulary is too advanced for a standard high school principal."
     ],
     correct: 1,
     explanation: "Hortatory exposition relies on strong modality to persuade and assert authority. Using 'maybe' and 'might' completely undermines the writer's conviction."
@@ -101,10 +101,10 @@ const quizQuestions = [
     context: "<b>Story:</b> Leo follows only accounts that agree with his political views. One day, he reads a post claiming the rival candidate wants to ban video games. Without doing any research, Leo writes a fiery blog post urging everyone to protest. It turns out the claim was a complete fabrication.",
     question: "If Leo's blog post is structured as a hortatory exposition, what is its primary critical flaw?",
     options: [
-      "It lacks a recommendation at the end.",
-      "The thesis and arguments are built on an unverified premise, rendering the entire logical structure of his persuasion invalid.",
-      "It uses too many temporal connectives.",
-      "The vocabulary is too emotional and subjective."
+      "The essay completely lacks a clear recommendation or call to action at the very end.",
+      "The entire logical structure collapses because it is built upon a totally unverified premise.",
+      "The text is extremely difficult to read because it uses too many complex temporal connectives.",
+      "The vocabulary choices are way too emotional and entirely subjective for an exposition text."
     ],
     correct: 1,
     explanation: "No matter how well-structured an exposition is (thesis, arguments, recommendation), if the foundational premise is factually false, the entire argument collapses."
@@ -114,10 +114,10 @@ const quizQuestions = [
     context: "<b>Story:</b> Nina finds a beautiful poem on an obscure blog. She copies it, posts it on her Instagram with a beautiful aesthetic background, and doesn't credit the author. When praised by her followers, she replies 'Thank you!' taking the credit.",
     question: "You are writing a hortatory text about Intellectual Property. Which sentence would serve as the strongest supporting argument against Nina's action?",
     options: [
-      "Firstly, copying someone's work without credit is intellectual theft that deprives the original creator of their rightful recognition.",
-      "Firstly, poetry is hard to write, so Nina should try writing her own.",
-      "Firstly, Instagram is not a place for poems anyway.",
-      "Firstly, nobody reads obscure blogs so the author won't find out."
+      "First, taking someone's work without crediting them is essentially a form of intellectual theft.",
+      "First, poetry is remarkably difficult to write, so Nina should really try writing her own.",
+      "First, Instagram is primarily meant for photos, not a suitable platform for stealing poems.",
+      "First, no one reads obscure blogs anyway, so the author will probably never find out."
     ],
     correct: 0,
     explanation: "Argument A addresses the core ethical issue (intellectual theft and lack of recognition), making it a much stronger and universally applicable argument than the others."
@@ -127,10 +127,10 @@ const quizQuestions = [
     context: "<b>Story:</b> Doni receives an email from 'AdminInsta' saying his account will be deleted in 24 hours unless he clicks a link and enters his password. Panicking, he does it. The next day, his account is hacked and used to scam his friends.",
     question: "You want to write a hortatory text warning others. What is the most constructive 'Recommendation' to conclude your text?",
     options: [
-      "Therefore, you should never use Instagram because it is full of hackers.",
-      "Thus, if you get hacked, you should immediately make a new account.",
-      "Consequently, we must always verify the sender's email address and never click suspicious links, to protect ourselves and our network.",
-      "In conclusion, Doni is gullible and we shouldn't be like him."
+      "Therefore, you should never use Instagram again because the platform is full of dangerous hackers.",
+      "Thus, if your account ever gets hacked, you should immediately create a completely new account.",
+      "Consequently, we must always verify senders and avoid clicking suspicious links to stay secure.",
+      "In conclusion, Doni is extremely gullible, and we should all try our best not to be like him."
     ],
     correct: 2,
     explanation: "A strong recommendation offers a proactive, actionable solution (verifying emails, not clicking links) that addresses the root cause of the issue described in the arguments."
