@@ -150,11 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function startQuiz() {
   const nameInput = document.getElementById('quizStudentName').value.trim();
   const classInput = document.getElementById('quizStudentClass').value.trim();
-  
-  if (localStorage.getItem('kindly_quiz_completed') === 'true') {
-    alert("Maaf, kamu sudah mengerjakan kuis ini. Setiap siswa hanya bisa mengerjakan 1 kali.");
-    return;
-  }
 
   if (!nameInput || !classInput) {
     alert("Please enter both your name and class first!");
