@@ -55,7 +55,12 @@
     </div>
     <div class="mb-4 text-start">
       <label class="form-label fw-bold">Class</label>
-      <input type="text" id="quizStudentClass" class="form-control" placeholder="e.g. Class A">
+      <select id="quizStudentClass" class="form-select">
+        <option value="" disabled selected>-- Pilih Kelas --</option>
+        <option value="12 A">12 A</option>
+        <option value="12 B">12 B</option>
+        <option value="12 C">12 C</option>
+      </select>
     </div>
     <button class="btn btn-kindly-primary w-100" onclick="startQuiz()">Start Quiz <i class="bi bi-arrow-right ms-1"></i></button>
   </div>

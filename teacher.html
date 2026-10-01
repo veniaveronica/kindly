@@ -91,6 +91,14 @@
       </div>
     </div>
     <div class="col-md-3 mb-2 mb-md-0">
+      <select id="classFilter" class="form-select" onchange="filterTable()">
+        <option value="all">All Classes</option>
+        <option value="12 a">12 A</option>
+        <option value="12 b">12 B</option>
+        <option value="12 c">12 C</option>
+      </select>
+    </div>
+    <div class="col-md-3 mb-2 mb-md-0">
       <select id="statusFilter" class="form-select" onchange="filterTable()">
         <option value="all">All Status</option>
         <option value="pending">Pending</option>
@@ -413,13 +421,17 @@
   function filterTable() {
     const query = document.getElementById('searchInput').value.toLowerCase();
     const status = document.getElementById('statusFilter').value;
+    const classVal = document.getElementById('classFilter').value;
     const rows = document.querySelectorAll('#voiceTableBody tr');
     
     rows.forEach(tr => {
       const nameElement = tr.querySelector('td:first-child .fw-bold');
-      if (!nameElement) return;
+      const classElement = tr.querySelector('td:first-child .text-muted');
+      if (!nameElement || !classElement) return;
       
       const name = nameElement.innerText.toLowerCase();
+      // the class is rendered like "(12 A)", so we remove parenthesis to match cleanly
+      const className = classElement.innerText.toLowerCase().replace(/[\(\)]/g, '').trim();
       
       let rowStatus = "none";
       if (tr.querySelector('.status-pending')) rowStatus = "pending";
@@ -427,8 +439,9 @@
       
       const matchesSearch = name.includes(query);
       const matchesStatus = status === "all" || status === rowStatus;
+      const matchesClass = classVal === "all" || className === classVal;
       
-      if (matchesSearch && matchesStatus) {
+      if (matchesSearch && matchesStatus && matchesClass) {
         tr.style.display = "";
       } else {
         tr.style.display = "none";
