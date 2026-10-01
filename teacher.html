@@ -53,7 +53,7 @@
     </a>
     <div class="d-flex align-items-center gap-3">
       <span class="text-muted2 d-none d-md-inline" style="font-size:0.9rem; font-weight:700;"><i class="bi bi-person-circle me-1"></i> Hello, Miss Zeze</span>
-      <a href="index.html" onclick="sessionStorage.removeItem('teacher_unlocked')" class="btn btn-sm btn-kindly-outline" style="border-radius:var(--radius-pill); font-weight:700;">Exit to App</a>
+      <a href="index.html" class="btn btn-sm btn-kindly-outline" style="border-radius:var(--radius-pill); font-weight:700;">Exit to App</a>
     </div>
   </div>
 </nav>
@@ -454,15 +454,9 @@
     const input = document.getElementById('teacherPasswordInput').value;
     if (input === "zeze") {
       document.getElementById('passwordOverlay').style.display = 'none';
-      sessionStorage.setItem('teacher_unlocked', 'true');
     } else {
       alert("Incorrect Password!");
     }
-  }
-
-  // Check if already unlocked in this session
-  if (sessionStorage.getItem('teacher_unlocked') === 'true') {
-    document.getElementById('passwordOverlay').style.display = 'none';
   }
 </script>
 
