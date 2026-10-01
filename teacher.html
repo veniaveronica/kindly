@@ -53,8 +53,7 @@
     </a>
     <div class="d-flex align-items-center gap-3">
       <span class="text-muted2 d-none d-md-inline" style="font-size:0.9rem; font-weight:700;"><i class="bi bi-person-circle me-1"></i> Hello, Miss Zeze</span>
-      <button class="btn btn-sm btn-danger px-3 shadow-sm" onclick="lockTeacherPanel()" style="border-radius:var(--radius-pill); font-weight:700;" title="Lock Dashboard"><i class="bi bi-lock-fill"></i></button>
-      <a href="index.html" class="btn btn-sm btn-kindly-outline" style="border-radius:var(--radius-pill); font-weight:700;">Exit</a>
+      <a href="index.html" onclick="sessionStorage.removeItem('teacher_unlocked')" class="btn btn-sm btn-kindly-outline" style="border-radius:var(--radius-pill); font-weight:700;">Exit to App</a>
     </div>
   </div>
 </nav>
@@ -459,12 +458,6 @@
     } else {
       alert("Incorrect Password!");
     }
-  }
-
-  function lockTeacherPanel() {
-    sessionStorage.removeItem('teacher_unlocked');
-    document.getElementById('teacherPasswordInput').value = '';
-    document.getElementById('passwordOverlay').style.display = 'flex';
   }
 
   // Check if already unlocked in this session
