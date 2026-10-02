@@ -12,24 +12,24 @@ const quizQuestions = [
     options: [
       "Social media must be completely banned for all teenagers to stop any potential drama.",
       "Using ALL CAPS is the most effective and polite way to express your genuine feelings.",
-      "Making assumptions and shaming someone publicly can cause irreversible emotional damage.",
-      "Maya should have prioritized replying to the text regardless of her current situation."
+      "Maya should have prioritized replying to the text regardless of her current situation.",
+      "Making assumptions and shaming someone publicly can cause irreversible emotional damage."
     ],
-    correct: 2,
-    explanation: "Argument C targets the root of the netiquette breach: impulsive public shaming based on assumptions. It provides a strong, objective reason (emotional damage) rather than an extreme reaction like banning social media."
+    correct: 3,
+    explanation: "This argument targets the root of the netiquette breach: impulsive public shaming based on assumptions. It provides a strong, objective reason (emotional damage) rather than an extreme reaction like banning social media."
   },
   {
     difficulty: "medium",
     context: "<b>Story:</b> A few years ago, Budi made a harsh, offensive joke about a minority group on Twitter. Today, he is applying for a prestigious scholarship. The committee finds the old tweet, and Budi's application is rejected. Budi argues that it's unfair because 'it happened a long time ago and was just a joke.'",
     question: "A hortatory exposition text titled 'The Permanence of the Internet' uses Budi's story as evidence. Which 'Recommendation' best concludes this text?",
     options: [
-      "Therefore, scholarship committees should learn to completely ignore old social media histories.",
       "Thus, we must be cautious of what we post, as our digital footprint is truly permanent.",
+      "Therefore, scholarship committees should learn to completely ignore old social media histories.",
       "In conclusion, Budi must aggressively delete his Twitter account to solve his current problem.",
       "So, you should always create multiple anonymous accounts to post any offensive jokes."
     ],
-    correct: 1,
-    explanation: "A strong recommendation (B) provides a universal lesson drawn from the argument. It advises the reader on how to act moving forward (be cautious) based on the evidence presented (digital footprint permanence)."
+    correct: 0,
+    explanation: "A strong recommendation provides a universal lesson drawn from the argument. It advises the reader on how to act moving forward (be cautious) based on the evidence presented (digital footprint permanence)."
   },
   {
     difficulty: "medium",
@@ -37,11 +37,11 @@ const quizQuestions = [
     question: "If you were to write a hortatory text about this situation, which evaluative words would be most effective to describe Rina's action in your argument?",
     options: [
       "Fast, responsive, caring",
-      "Reckless, unverified, perilous",
       "Slow, deliberate, malicious",
+      "Reckless, unverified, perilous",
       "Normal, everyday, harmless"
     ],
-    correct: 1,
+    correct: 2,
     explanation: "Evaluative words judge the action to persuade the reader. 'Reckless' and 'perilous' accurately critique the danger of spreading unverified medical hoaxes without checking facts."
   },
   {
@@ -50,11 +50,11 @@ const quizQuestions = [
     question: "In a hortatory exposition text about 'Digital Consent,' how would you critically evaluate Dina's defense?",
     options: [
       "It is perfectly valid since the internet thrives purely on entertaining and humorous content.",
-      "It is deeply flawed because the subject's right to privacy always overrides the creator's intent.",
       "It makes sense because the viral video ultimately made Dina and Siti much more popular.",
-      "It is totally acceptable since taking photos without permission is a normal trend on TikTok."
+      "It is totally acceptable since taking photos without permission is a normal trend on TikTok.",
+      "It is deeply flawed because the subject's right to privacy always overrides the creator's intent."
     ],
-    correct: 1,
+    correct: 3,
     explanation: "A critical analysis separates intent ('just a joke') from impact (humiliation). It establishes that consent is an absolute prerequisite, dismantling Dina's weak defense."
   },
   {
@@ -63,12 +63,12 @@ const quizQuestions = [
     question: "You are writing a thesis for a hortatory text against DarkSlayer99's behavior. Which thesis statement is the most analytical and persuasive?",
     options: [
       "Freedom of speech is generally bad because it allows people to insult other innocent gamers.",
-      "Users like DarkSlayer99 should be immediately and permanently banned from the forum.",
       "Freedom of speech is important, but it does not provide immunity from the consequences of abuse.",
+      "Users like DarkSlayer99 should be immediately and permanently banned from the forum.",
       "Video games make people incredibly violent, which naturally causes them to type mean things."
     ],
-    correct: 2,
-    explanation: "A strong thesis (C) acknowledges the counter-argument (freedom of speech) but firmly overrides it with a nuanced principle (it doesn't equal immunity from consequences), setting up a solid foundation for the arguments."
+    correct: 1,
+    explanation: "A strong thesis acknowledges the counter-argument (freedom of speech) but firmly overrides it with a nuanced principle (it doesn't equal immunity from consequences), setting up a solid foundation for the arguments."
   },
   {
     difficulty: "medium",
@@ -89,11 +89,11 @@ const quizQuestions = [
     question: "Why does this text fail as a hortatory exposition, and how can it be fixed?",
     options: [
       "It lacks proper arguments; it should add real stories about lazy students sleeping in class.",
-      "It uses hesitant modality; passive words like 'maybe' should be replaced with strong imperatives.",
       "It sounds overly aggressive; it desperately needs to be rewritten using much more polite language.",
+      "It uses hesitant modality; passive words like 'maybe' should be replaced with strong imperatives.",
       "It is excessively complex; the vocabulary is too advanced for a standard high school principal."
     ],
-    correct: 1,
+    correct: 2,
     explanation: "Hortatory exposition relies on strong modality to persuade and assert authority. Using 'maybe' and 'might' completely undermines the writer's conviction."
   },
   {
@@ -102,11 +102,11 @@ const quizQuestions = [
     question: "If Leo's blog post is structured as a hortatory exposition, what is its primary critical flaw?",
     options: [
       "The essay completely lacks a clear recommendation or call to action at the very end.",
-      "The entire logical structure collapses because it is built upon a totally unverified premise.",
       "The text is extremely difficult to read because it uses too many complex temporal connectives.",
-      "The vocabulary choices are way too emotional and entirely subjective for an exposition text."
+      "The vocabulary choices are way too emotional and entirely subjective for an exposition text.",
+      "The entire logical structure collapses because it is built upon a totally unverified premise."
     ],
-    correct: 1,
+    correct: 3,
     explanation: "No matter how well-structured an exposition is (thesis, arguments, recommendation), if the foundational premise is factually false, the entire argument collapses."
   },
   {
@@ -114,25 +114,25 @@ const quizQuestions = [
     context: "<b>Story:</b> Nina finds a beautiful poem on an obscure blog. She copies it, posts it on her Instagram with a beautiful aesthetic background, and doesn't credit the author. When praised by her followers, she replies 'Thank you!' taking the credit.",
     question: "You are writing a hortatory text about Intellectual Property. Which sentence would serve as the strongest supporting argument against Nina's action?",
     options: [
-      "First, taking someone's work without crediting them is essentially a form of intellectual theft.",
       "First, poetry is remarkably difficult to write, so Nina should really try writing her own.",
+      "First, taking someone's work without crediting them is essentially a form of intellectual theft.",
       "First, Instagram is primarily meant for photos, not a suitable platform for stealing poems.",
       "First, no one reads obscure blogs anyway, so the author will probably never find out."
     ],
-    correct: 0,
-    explanation: "Argument A addresses the core ethical issue (intellectual theft and lack of recognition), making it a much stronger and universally applicable argument than the others."
+    correct: 1,
+    explanation: "This argument addresses the core ethical issue (intellectual theft and lack of recognition), making it a much stronger and universally applicable argument than the others."
   },
   {
     difficulty: "hard",
     context: "<b>Story:</b> Doni receives an email from 'AdminInsta' saying his account will be deleted in 24 hours unless he clicks a link and enters his password. Panicking, he does it. The next day, his account is hacked and used to scam his friends.",
     question: "You want to write a hortatory text warning others. What is the most constructive 'Recommendation' to conclude your text?",
     options: [
+      "Consequently, we must always verify senders and avoid clicking suspicious links to stay secure.",
       "Therefore, you should never use Instagram again because the platform is full of dangerous hackers.",
       "Thus, if your account ever gets hacked, you should immediately create a completely new account.",
-      "Consequently, we must always verify senders and avoid clicking suspicious links to stay secure.",
       "In conclusion, Doni is extremely gullible, and we should all try our best not to be like him."
     ],
-    correct: 2,
+    correct: 0,
     explanation: "A strong recommendation offers a proactive, actionable solution (verifying emails, not clicking links) that addresses the root cause of the issue described in the arguments."
   }
 ];
@@ -160,16 +160,8 @@ function startQuiz() {
   
   localStorage.setItem('kindly_current_user', JSON.stringify({ name: studentName, class: studentClass }));
   
-  // Shuffle options for all questions so the correct answer isn't always the same letter
-  quizQuestions.forEach(q => {
-    let optionsStatus = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.correct }));
-    for (let i = optionsStatus.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [optionsStatus[i], optionsStatus[j]] = [optionsStatus[j], optionsStatus[i]];
-    }
-    q.options = optionsStatus.map(o => o.text);
-    q.correct = optionsStatus.findIndex(o => o.isCorrect);
-  });
+  // The options have been manually randomized in the array definition,
+  // so we don't shuffle at runtime to ensure the explanations correctly match the assigned letters.
 
   document.getElementById('quizStartScreen').style.display = 'none';
   document.getElementById('quizMainScreen').style.display = 'block';
@@ -180,7 +172,7 @@ function renderQuestion() {
   const q = quizQuestions[currentQuestion];
   const total = quizQuestions.length;
 
-  document.getElementById('quizCounter').textContent = `Q${currentQuestion + 1} / ${total}`;
+  document.getElementById('quizCounter').textContent = `${currentQuestion + 1} / ${total}`;
   document.getElementById('quizProgressFill').style.width = `${((currentQuestion) / total) * 100}%`;
   document.getElementById('quizQuestionText').textContent = q.question;
 
@@ -223,7 +215,6 @@ function renderQuestion() {
       <i class="bi ${isCorrect ? 'bi-check-circle-fill' : 'bi-x-circle-fill'}"></i>
       <div>
         <strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong>
-        ${q.explanation}
       </div>`;
   } else {
     feedbackBox.className = 'quiz-feedback-box';

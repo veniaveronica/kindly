@@ -4,7 +4,7 @@
   <meta name="google" content="notranslate">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Individual Task — Kindly</title>
+<title>Individual Task — NetiQuest</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
 <!-- ================= NAVBAR ================= -->
 <nav class="navbar navlearn navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand" href="index.html"><span class="brand-mark"><i class="bi bi-chat-heart-fill"></i></span>Kindly</a>
+    <a class="navbar-brand" href="index.html"><span class="brand-mark"><i class="bi bi-chat-heart-fill"></i></span>NetiQuest</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
       <i class="bi bi-list" style="font-size:1.6rem;"></i>
     </button>
@@ -152,12 +152,12 @@
       <div class="col-md-6 d-flex align-items-center gap-2">
         <span class="brand-mark"><i class="bi bi-chat-heart-fill"></i></span>
         <div>
-          <div class="fw-bold" style="font-family:var(--font-heading);">Kindly</div>
+          <div class="fw-bold" style="font-family:var(--font-heading);">NetiQuest</div>
           <div class="text-muted2" style="font-size:0.8rem;">Interactive English Learning Media</div>
         </div>
       </div>
       <div class="col-md-6 text-md-end">
-        <p class="text-muted2 mb-0" style="font-size:0.82rem;">Media Pembelajaran — Hortatory Exposition Text · Tema Netiquette</p>
+        <p class="text-muted2 mb-0" style="font-size:0.82rem;">Media Pembelajaran — Hortatory Exposition Text · Netiquette</p>
       </div>
     </div>
   </div>
@@ -209,7 +209,7 @@
       setTimeout(() => {
         if (mediaRecorder && mediaRecorder.state !== 'inactive') {
           btnStop.click();
-          alert("Waktu habis! Rekaman otomatis dihentikan pada batas maksimal 2 menit agar pengiriman tidak gagal.");
+          alert("Time's up! The recording has been automatically stopped at the 2-minute limit to ensure successful submission.");
         }
       }, 120000);
       
@@ -240,8 +240,13 @@
     const currentUser = JSON.parse(localStorage.getItem('kindly_current_user'));
     if (currentUser && currentUser.name) {
       try {
-        const response = await fetch('/api/submissions');
-        const submissions = await response.json();
+        let submissions = [];
+        if (window.location.protocol === 'file:') {
+          submissions = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        } else {
+          const response = await fetch('/api/submissions');
+          submissions = await response.json();
+        }
         const studentSub = submissions.find(s => s.name.toLowerCase() === currentUser.name.toLowerCase());
         
         if (studentSub && studentSub.audio_data) {
@@ -299,6 +304,12 @@
     try {
       // Save to Neon Database via API
       document.body.style.cursor = 'wait';
+      const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
+      if (btnSubmit) {
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
+        btnSubmit.disabled = true;
+      }
+
       await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -310,13 +321,44 @@
           scriptDraft: scriptDraft
         })
       });
+      
       document.body.style.cursor = 'default';
-            alert('Sukses! Tugas Individu kamu telah terkirim ke server. Mohon tunggu penilaian dari guru.');
-      // Refresh the page to update the status
-      window.location.reload();    } catch (e) {
+      if (btnSubmit) {
+        btnSubmit.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Successfully Submitted!';
+        btnSubmit.classList.remove('btn-kindly-primary');
+        btnSubmit.classList.add('btn-success');
+      }
+      setTimeout(() => window.location.reload(), 1500);
+    } catch (e) {
       document.body.style.cursor = 'default';
-      alert('Gagal mengirim tugas. Pastikan internetmu terhubung.');
-      console.error(e);
+      const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
+      
+      if (window.location.protocol === 'file:') {
+        let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        localSubs.push({
+           name: name,
+           class_name: className,
+           audio_data: audioData,
+           individual_score: null,
+           topic: topic,
+           script_draft: scriptDraft
+        });
+        localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
+        
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Successfully Submitted!';
+          btnSubmit.classList.remove('btn-kindly-primary');
+          btnSubmit.classList.add('btn-success');
+        }
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<i class="bi bi-cloud-arrow-up-fill me-2"></i> Submit Individual Task';
+          btnSubmit.disabled = false;
+        }
+        alert('Failed to submit the task. Please ensure you are connected to the internet.');
+        console.error(e);
+      }
     }
   }
 </script>
