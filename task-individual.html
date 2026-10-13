@@ -241,24 +241,13 @@
     if (currentUser && currentUser.name) {
       try {
         let submissions = [];
-        if (window.location.protocol !== 'file:') {
-          try {
-            const response = await fetch('/api/submissions');
-            if (response.ok) {
-              const data = await response.json();
-              if (Array.isArray(data)) submissions = data;
-            }
-          } catch (e) {
-            console.warn("Could not fetch remote submissions, checking local:", e);
-          }
-        }
-        
-        // Fallback to local submissions if API returned nothing or offline
-        if (!submissions || submissions.length === 0) {
+        if (window.location.protocol === 'file:') {
           submissions = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        } else {
+          const response = await fetch('/api/submissions');
+          submissions = await response.json();
         }
-
-        const studentSub = submissions.find(s => s.name && s.name.toLowerCase() === currentUser.name.toLowerCase());
+        const studentSub = submissions.find(s => s.name.toLowerCase() === currentUser.name.toLowerCase());
         
         if (studentSub && studentSub.audio_data) {
           const alertBox = document.getElementById('studentStatusAlert');
@@ -312,45 +301,15 @@
     const topic = topicEl ? "Topic " + topicEl.value : null;
     const scriptDraft = document.getElementById('scriptDraft') ? document.getElementById('scriptDraft').value.trim() : null;
 
-    const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
-    if (btnSubmit) {
-      btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
-      btnSubmit.disabled = true;
-    }
-    document.body.style.cursor = 'wait';
-
-    const nowIso = new Date().toISOString();
-
-    // 1. Always save to local mock submissions for offline / instant preview
     try {
-      let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
-      let existingIndex = localSubs.findIndex(s => s.name && s.name.toLowerCase() === name.toLowerCase());
-      if (existingIndex > -1) {
-        localSubs[existingIndex].audio_data = audioData;
-        localSubs[existingIndex].topic = topic;
-        localSubs[existingIndex].script_draft = scriptDraft;
-        localSubs[existingIndex].submitted_at = nowIso;
-        if (className) localSubs[existingIndex].class_name = className;
-      } else {
-        localSubs.unshift({
-          id: Date.now(),
-          name: name,
-          class_name: className,
-          quiz_score: null,
-          audio_data: audioData,
-          individual_score: null,
-          topic: topic,
-          script_draft: scriptDraft,
-          submitted_at: nowIso
-        });
+      // Save to Neon Database via API
+      document.body.style.cursor = 'wait';
+      const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
+      if (btnSubmit) {
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
+        btnSubmit.disabled = true;
       }
-      localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
-    } catch (e) {
-      console.warn("Could not save to localStorage:", e);
-    }
 
-    // 2. Save to Neon Database via API
-    try {
       await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -362,17 +321,45 @@
           scriptDraft: scriptDraft
         })
       });
+      
+      document.body.style.cursor = 'default';
+      if (btnSubmit) {
+        btnSubmit.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Successfully Submitted!';
+        btnSubmit.classList.remove('btn-kindly-primary');
+        btnSubmit.classList.add('btn-success');
+      }
+      setTimeout(() => window.location.reload(), 1500);
     } catch (e) {
-      console.warn("API request failed (offline / local storage fallback preserved):", e);
+      document.body.style.cursor = 'default';
+      const btnSubmit = document.querySelector('button[onclick="submitIndividualTask()"]');
+      
+      if (window.location.protocol === 'file:') {
+        let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        localSubs.push({
+           name: name,
+           class_name: className,
+           audio_data: audioData,
+           individual_score: null,
+           topic: topic,
+           script_draft: scriptDraft
+        });
+        localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
+        
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Successfully Submitted!';
+          btnSubmit.classList.remove('btn-kindly-primary');
+          btnSubmit.classList.add('btn-success');
+        }
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<i class="bi bi-cloud-arrow-up-fill me-2"></i> Submit Individual Task';
+          btnSubmit.disabled = false;
+        }
+        alert('Failed to submit the task. Please ensure you are connected to the internet.');
+        console.error(e);
+      }
     }
-    
-    document.body.style.cursor = 'default';
-    if (btnSubmit) {
-      btnSubmit.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Successfully Submitted!';
-      btnSubmit.classList.remove('btn-kindly-primary');
-      btnSubmit.classList.add('btn-success');
-    }
-    setTimeout(() => window.location.reload(), 1500);
   }
 </script>
 </body>

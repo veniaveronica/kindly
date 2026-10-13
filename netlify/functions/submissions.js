@@ -1,28 +1,7 @@
-require('dotenv').config();
 const { neon } = require('@neondatabase/serverless');
 
-const headers = {
-  'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
-};
-
 exports.handler = async (event, context) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
   try {
-    if (!process.env.DATABASE_URL) {
-      console.error("DATABASE_URL is not configured.");
-      return { 
-        statusCode: 500, 
-        headers, 
-        body: JSON.stringify({ error: "DATABASE_URL environment variable is missing." }) 
-      };
-    }
-
     // Connect to Neon Database using the URL from .env
     const sql = neon(process.env.DATABASE_URL);
     
@@ -48,7 +27,7 @@ exports.handler = async (event, context) => {
     if (method === 'GET') {
       // Get all submissions (For Teacher Dashboard & checking individual status)
       const results = await sql`SELECT * FROM kindly_submissions ORDER BY submitted_at DESC`;
-      return { statusCode: 200, headers, body: JSON.stringify(results) };
+      return { statusCode: 200, body: JSON.stringify(results) };
     } 
     
     else if (method === 'POST') {
@@ -80,7 +59,7 @@ exports.handler = async (event, context) => {
           VALUES (${name}, ${className}, ${quizScore || null}, ${audioData || null}, ${topic || null}, ${scriptDraft || null})
         `;
       }
-      return { statusCode: 200, headers, body: JSON.stringify({ message: 'Saved successfully!' }) };
+      return { statusCode: 200, body: JSON.stringify({ message: 'Saved successfully!' }) };
     }
     
     else if (method === 'PUT') {
@@ -89,20 +68,20 @@ exports.handler = async (event, context) => {
       const { id, individualScore } = body;
       
       await sql`UPDATE kindly_submissions SET individual_score = ${individualScore} WHERE id = ${id}`;
-      return { statusCode: 200, headers, body: JSON.stringify({ message: 'Grade saved successfully!' }) };
+      return { statusCode: 200, body: JSON.stringify({ message: 'Grade saved successfully!' }) };
     }
 
     else if (method === 'DELETE') {
       // Teacher deletes a submission
       const body = JSON.parse(event.body);
       await sql`DELETE FROM kindly_submissions WHERE id = ${body.id}`;
-      return { statusCode: 200, headers, body: JSON.stringify({ message: 'Deleted successfully!' }) };
+      return { statusCode: 200, body: JSON.stringify({ message: 'Deleted successfully!' }) };
     }
 
-    return { statusCode: 405, headers, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: 'Method Not Allowed' };
 
   } catch (error) {
     console.error("Database Error:", error);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
