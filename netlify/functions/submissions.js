@@ -25,9 +25,45 @@ exports.handler = async (event, context) => {
     const method = event.httpMethod;
 
     if (method === 'GET') {
-      // Get all submissions (For Teacher Dashboard & checking individual status)
-      const results = await sql`SELECT * FROM kindly_submissions ORDER BY submitted_at DESC`;
-      return { statusCode: 200, body: JSON.stringify(results) };
+      const audioId = event.queryStringParameters && event.queryStringParameters.audio_id;
+      if (audioId) {
+        // Return single student's audio
+        const audioResult = await sql`SELECT audio_data FROM kindly_submissions WHERE id = ${audioId} LIMIT 1`;
+        if (audioResult.length > 0 && audioResult[0].audio_data) {
+          return {
+            statusCode: 200,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ audio_data: audioResult[0].audio_data })
+          };
+        } else {
+          return {
+            statusCode: 404,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Audio not found' })
+          };
+        }
+      }
+
+      // Get all submissions without bulky audio payload to stay well below Netlify 6MB payload limit
+      const results = await sql`
+        SELECT 
+          id, 
+          name, 
+          class_name, 
+          quiz_score, 
+          individual_score, 
+          topic, 
+          script_draft,
+          (audio_data IS NOT NULL AND length(audio_data) > 0) AS has_audio,
+          submitted_at
+        FROM kindly_submissions 
+        ORDER BY submitted_at DESC
+      `;
+      return { 
+        statusCode: 200, 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(results) 
+      };
     } 
     
     else if (method === 'POST') {

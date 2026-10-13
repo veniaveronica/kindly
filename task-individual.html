@@ -249,7 +249,7 @@
         }
         const studentSub = submissions.find(s => s.name.toLowerCase() === currentUser.name.toLowerCase());
         
-        if (studentSub && studentSub.audio_data) {
+        if (studentSub && (studentSub.has_audio || studentSub.audio_data)) {
           const alertBox = document.getElementById('studentStatusAlert');
           alertBox.style.display = 'flex';
           

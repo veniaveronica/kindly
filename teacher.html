@@ -255,16 +255,26 @@
         let gradingHtml = '<span class="text-muted2 fst-italic">-</span>';
         let statusHtml = '<span class="status-badge bg-secondary text-white">None</span>';
         
-        if (sub.audio_data) {
-          audioHtml = `<audio controls class="audio-sm"><source src="${sub.audio_data}"></audio>`;
+        if (sub.has_audio || sub.audio_data) {
+          if (sub.audio_data) {
+            audioHtml = `<audio controls class="audio-sm"><source src="${sub.audio_data}"></audio>`;
+          } else {
+            audioHtml = `
+              <div id="audio-container-${sub.id}">
+                <button class="btn btn-sm btn-outline-primary py-1 px-2 d-inline-flex align-items-center gap-1" onclick="loadAndPlayAudio(${sub.id}, this)">
+                  <i class="bi bi-play-circle-fill"></i> Play Audio
+                </button>
+              </div>
+            `;
+          }
           
           if (sub.individual_score !== null) {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', ${sub.individual_score}, this, ${sub.id})">
+            gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, ${sub.individual_score}, this)">
               <i class="bi bi-ui-checks"></i> Edit Grade (${sub.individual_score}/100)
             </button>`;
             statusHtml = `<span class="status-badge status-graded">Graded</span>`;
           } else {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', 0, this, ${sub.id})">
+            gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, 0, this)">
               <i class="bi bi-ui-checks"></i> Evaluate Now
             </button>`;
             statusHtml = `<span class="status-badge status-pending">Pending</span>`;
@@ -335,18 +345,52 @@
   }
 
 
+  const audioCache = {};
+  async function loadAndPlayAudio(id, btnElement) {
+    const container = document.getElementById(`audio-container-${id}`);
+    if (!container) return;
+
+    if (audioCache[id]) {
+      container.innerHTML = `<audio controls autoplay class="audio-sm"><source src="${audioCache[id]}"></audio>`;
+      return;
+    }
+
+    const originalHtml = btnElement.innerHTML;
+    btnElement.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Loading...`;
+    btnElement.disabled = true;
+
+    try {
+      const res = await fetch(`/api/submissions?audio_id=${id}`);
+      const data = await res.json();
+      if (data && data.audio_data) {
+        audioCache[id] = data.audio_data;
+        container.innerHTML = `<audio controls autoplay class="audio-sm"><source src="${data.audio_data}"></audio>`;
+      } else {
+        alert("Audio recording not found.");
+        btnElement.innerHTML = originalHtml;
+        btnElement.disabled = false;
+      }
+    } catch (e) {
+      alert("Failed to load audio: " + e.message);
+      btnElement.innerHTML = originalHtml;
+      btnElement.disabled = false;
+    }
+  }
+
   let currentDbId = null;
 
-  function openRubric(studentName, currentScore, btnElement, dbId) {
+  function openRubric(dbId, currentScore, btnElement) {
     currentRowButton = btnElement;
     currentDbId = dbId;
-    document.getElementById('modalStudentName').innerText = studentName;
     
-    // Find the submission to show topic and draft
+    // Find the submission to show student name, topic, and draft
     const sub = allSubmissions.find(s => s.id === dbId);
     if (sub) {
+      document.getElementById('modalStudentName').innerText = sub.name;
       document.getElementById('modalTopic').innerText = sub.topic || '-';
       document.getElementById('modalScriptDraft').innerText = sub.script_draft || 'No draft provided by the student.';
+    } else {
+      document.getElementById('modalStudentName').innerText = 'Student';
     }
     
     // Reset all radio buttons
