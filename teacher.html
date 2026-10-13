@@ -25,6 +25,8 @@
   .rubric-table th { background: var(--lavender-light); color: var(--lavender-dark); font-size:0.85rem; }
   .rubric-table td { font-size: 0.85rem; vertical-align: top; }
   .rubric-radio { cursor: pointer; transform: scale(1.2); margin-right: 5px; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .spinning { display: inline-block; animation: spin 0.8s linear infinite; }
 </style>
 </head>
 <body data-page="teacher">
@@ -99,13 +101,16 @@
         <option value="12 c">12 C</option>
       </select>
     </div>
-    <div class="col-md-3 mb-2 mb-md-0">
+    <div class="col-md-4 mb-2 mb-md-0 d-flex gap-2">
       <select id="statusFilter" class="form-select" onchange="filterTable()">
         <option value="all">All Status</option>
         <option value="pending">Pending</option>
         <option value="graded">Graded</option>
         <option value="none">Not Submitted</option>
       </select>
+      <button id="btnRefresh" class="btn btn-outline-secondary d-inline-flex align-items-center gap-1 text-nowrap px-3" onclick="loadSubmissions(true)" title="Refresh Data">
+        <i class="bi bi-arrow-clockwise"></i> <span>Refresh</span>
+      </button>
     </div>
   </div>
 
@@ -235,8 +240,12 @@
   let currentRowButton = null;
   let allSubmissions = [];
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    updateStats(); // Initial 0 stats
+  async function loadSubmissions(isManual = false) {
+    const btnRefresh = document.getElementById('btnRefresh');
+    const icon = btnRefresh ? btnRefresh.querySelector('i') : null;
+    if (icon) icon.classList.add('spinning');
+    if (btnRefresh) btnRefresh.disabled = true;
+
     try {
       if (window.location.protocol === 'file:') {
         allSubmissions = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
@@ -248,66 +257,80 @@
       const tableBody = document.getElementById('voiceTableBody');
       tableBody.innerHTML = ''; // Clear table
       
-      allSubmissions.forEach(sub => {
-        const tr = document.createElement('tr');
-        
-        let audioHtml = '<span class="text-muted2 fst-italic">Not Submitted</span>';
-        let gradingHtml = '<span class="text-muted2 fst-italic">-</span>';
-        let statusHtml = '<span class="status-badge bg-secondary text-white">None</span>';
-        
-        if (sub.has_audio || sub.audio_data) {
-          if (sub.audio_data) {
-            audioHtml = `<audio controls class="audio-sm"><source src="${sub.audio_data}"></audio>`;
-          } else {
-            audioHtml = `
-              <div id="audio-container-${sub.id}">
-                <button class="btn btn-sm btn-outline-primary py-1 px-2 d-inline-flex align-items-center gap-1" onclick="loadAndPlayAudio(${sub.id}, this)">
-                  <i class="bi bi-play-circle-fill"></i> Play Audio
-                </button>
-              </div>
-            `;
+      if (!allSubmissions || allSubmissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted2 fst-italic">No submissions found yet.</td></tr>`;
+      } else {
+        allSubmissions.forEach(sub => {
+          const tr = document.createElement('tr');
+          
+          let audioHtml = '<span class="text-muted2 fst-italic">Not Submitted</span>';
+          let gradingHtml = '<span class="text-muted2 fst-italic">-</span>';
+          let statusHtml = '<span class="status-badge bg-secondary text-white">None</span>';
+          
+          if (sub.has_audio || sub.audio_data) {
+            if (sub.audio_data) {
+              audioHtml = `<audio controls class="audio-sm"><source src="${sub.audio_data}"></audio>`;
+            } else {
+              audioHtml = `
+                <div id="audio-container-${sub.id}">
+                  <button class="btn btn-sm btn-outline-primary py-1 px-2 d-inline-flex align-items-center gap-1" onclick="loadAndPlayAudio(${sub.id}, this)">
+                    <i class="bi bi-play-circle-fill"></i> Play Audio
+                  </button>
+                </div>
+              `;
+            }
+            
+            if (sub.individual_score !== null) {
+              gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, ${sub.individual_score}, this)">
+                <i class="bi bi-ui-checks"></i> Edit Grade (${sub.individual_score}/100)
+              </button>`;
+              statusHtml = `<span class="status-badge status-graded">Graded</span>`;
+            } else {
+              gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, 0, this)">
+                <i class="bi bi-ui-checks"></i> Evaluate Now
+              </button>`;
+              statusHtml = `<span class="status-badge status-pending">Pending</span>`;
+            }
           }
           
-          if (sub.individual_score !== null) {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, ${sub.individual_score}, this)">
-              <i class="bi bi-ui-checks"></i> Edit Grade (${sub.individual_score}/100)
-            </button>`;
-            statusHtml = `<span class="status-badge status-graded">Graded</span>`;
-          } else {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric(${sub.id}, 0, this)">
-              <i class="bi bi-ui-checks"></i> Evaluate Now
-            </button>`;
-            statusHtml = `<span class="status-badge status-pending">Pending</span>`;
+          let quizHtml = '<span class="text-muted2 fst-italic">Not Submitted</span>';
+          if (sub.quiz_score !== null) {
+            quizHtml = `<span class="badge ${sub.quiz_score >= 70 ? 'bg-success' : 'bg-warning'} fs-6">${sub.quiz_score} / 100</span>`;
           }
-        }
-        
-        let quizHtml = '<span class="text-muted2 fst-italic">Not Submitted</span>';
-        if (sub.quiz_score !== null) {
-          quizHtml = `<span class="badge ${sub.quiz_score >= 70 ? 'bg-success' : 'bg-warning'} fs-6">${sub.quiz_score} / 100</span>`;
-        }
-        
-        const timeStr = new Date(sub.submitted_at).toLocaleString();
-        
-        tr.innerHTML = `
-          <td>
-            <div class="fw-bold text-dark">${sub.name} <span class="text-muted" style="font-weight:normal; font-size:0.8rem">(${sub.class_name})</span></div>
-            <div class="text-muted2" style="font-size:0.8rem;">Submitted: ${timeStr}</div>
-          </td>
-          <td>${quizHtml}</td>
-          <td>${audioHtml}</td>
-          <td>${gradingHtml}</td>
-          <td>${statusHtml}</td>
-          <td>
-            <button class="btn btn-sm btn-danger text-white border-0 shadow-sm" onclick="deleteSubmission(${sub.id}, this)" title="Delete"><i class="bi bi-trash-fill"></i></button>
-          </td>
-        `;
-        tableBody.appendChild(tr);
-      });
+          
+          const timeStr = new Date(sub.submitted_at).toLocaleString();
+          
+          tr.innerHTML = `
+            <td>
+              <div class="fw-bold text-dark">${sub.name} <span class="text-muted" style="font-weight:normal; font-size:0.8rem">(${sub.class_name})</span></div>
+              <div class="text-muted2" style="font-size:0.8rem;">Submitted: ${timeStr}</div>
+            </td>
+            <td>${quizHtml}</td>
+            <td>${audioHtml}</td>
+            <td>${gradingHtml}</td>
+            <td>${statusHtml}</td>
+            <td>
+              <button class="btn btn-sm btn-danger text-white border-0 shadow-sm" onclick="deleteSubmission(${sub.id}, this)" title="Delete"><i class="bi bi-trash-fill"></i></button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
       
       updateStats();
+      filterTable();
     } catch (e) {
       console.error("Failed to load submissions:", e);
+      if (isManual) alert("Failed to refresh: " + e.message);
+    } finally {
+      if (icon) icon.classList.remove('spinning');
+      if (btnRefresh) btnRefresh.disabled = false;
     }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateStats();
+    loadSubmissions();
   });
 
   function updateStats() {
