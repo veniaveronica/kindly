@@ -280,7 +280,27 @@ function goNext() {
   }
 }
 
-function finishQuiz() {
+async function finishQuiz() {
+  const nextBtnContainer = document.getElementById('nextBtnContainer');
+  if (nextBtnContainer) {
+    const nextBtn = nextBtnContainer.querySelector('button');
+    if (nextBtn) {
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
+    }
+  }
+
+  // Fallback if studentName / studentClass wasn't set in memory
+  if (!studentName) {
+    try {
+      const savedUser = JSON.parse(localStorage.getItem('kindly_current_user') || '{}');
+      if (savedUser && savedUser.name) {
+        studentName = savedUser.name;
+        studentClass = savedUser.class || '';
+      }
+    } catch(e) {}
+  }
+
   let score = 0;
   const reviewData = quizQuestions.map((q, i) => {
     const isCorrect = userAnswers[i] === q.correct;
@@ -295,17 +315,47 @@ function finishQuiz() {
   });
 
   const finalScore = Math.round((score / quizQuestions.length) * 100);
-  
-  // Save to Neon Database via API
-  fetch('/api/submissions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name: studentName,
-      className: studentClass,
-      quizScore: finalScore
-    })
-  }).catch(err => console.error("Failed to save to database:", err));
+  const nowIso = new Date().toISOString();
+
+  // 1. Always sync to localStorage (offline/local dashboard fallback)
+  try {
+    let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+    let existingIndex = localSubs.findIndex(s => s.name && s.name.toLowerCase() === (studentName || '').toLowerCase());
+    
+    if (existingIndex > -1) {
+      localSubs[existingIndex].quiz_score = finalScore;
+      localSubs[existingIndex].submitted_at = nowIso;
+      if (studentClass) localSubs[existingIndex].class_name = studentClass;
+    } else {
+      localSubs.unshift({
+        id: Date.now(),
+        name: studentName || 'Student',
+        class_name: studentClass || '-',
+        quiz_score: finalScore,
+        audio_data: null,
+        individual_score: null,
+        submitted_at: nowIso
+      });
+    }
+    localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
+  } catch (err) {
+    console.error("Failed to save to local mock submissions:", err);
+  }
+
+  // 2. Save to Neon Database via API and await response
+  try {
+    await fetch('/api/submissions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: studentName || 'Student',
+        className: studentClass || '-',
+        quizScore: finalScore
+      })
+    });
+  } catch (err) {
+    console.warn("API request failed (local/offline fallback saved):", err);
+  }
 
   sessionStorage.setItem('kindly_score', score);
   sessionStorage.setItem('kindly_total', quizQuestions.length);

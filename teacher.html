@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
   <meta name="google" content="notranslate">
@@ -238,15 +238,40 @@
   document.addEventListener('DOMContentLoaded', async () => {
     updateStats(); // Initial 0 stats
     try {
-      if (window.location.protocol === 'file:') {
-        allSubmissions = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+      allSubmissions = [];
+      if (window.location.protocol !== 'file:') {
+        try {
+          const response = await fetch('/api/submissions');
+          if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data)) {
+              allSubmissions = data;
+            }
+          }
+        } catch (err) {
+          console.warn("Failed to fetch from API, falling back to local storage:", err);
+        }
+      }
+
+      // Merge or fallback to localStorage
+      const localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+      if (allSubmissions.length === 0) {
+        allSubmissions = localSubs;
       } else {
-        const response = await fetch('/api/submissions');
-        allSubmissions = await response.json();
+        // If there are local mock submissions not yet in DB, merge them
+        localSubs.forEach(loc => {
+          if (!allSubmissions.some(db => db.name && db.name.toLowerCase() === loc.name.toLowerCase())) {
+            allSubmissions.push(loc);
+          }
+        });
       }
       
       const tableBody = document.getElementById('voiceTableBody');
       tableBody.innerHTML = ''; // Clear table
+
+      if (allSubmissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted2 fst-italic">No submissions found yet.</td></tr>`;
+      }
       
       allSubmissions.forEach(sub => {
         const tr = document.createElement('tr');
@@ -255,16 +280,18 @@
         let gradingHtml = '<span class="text-muted2 fst-italic">-</span>';
         let statusHtml = '<span class="status-badge bg-secondary text-white">None</span>';
         
+        const subId = sub.id || (sub.name ? encodeURIComponent(sub.name) : Date.now());
+
         if (sub.audio_data) {
           audioHtml = `<audio controls class="audio-sm"><source src="${sub.audio_data}"></audio>`;
           
-          if (sub.individual_score !== null) {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', ${sub.individual_score}, this, ${sub.id})">
+          if (sub.individual_score !== null && sub.individual_score !== undefined) {
+            gradingHtml = `<button class="btn btn-sm btn-kindly-outline" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', ${sub.individual_score}, this, '${subId}')">
               <i class="bi bi-ui-checks"></i> Edit Grade (${sub.individual_score}/100)
             </button>`;
             statusHtml = `<span class="status-badge status-graded">Graded</span>`;
           } else {
-            gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', 0, this, ${sub.id})">
+            gradingHtml = `<button class="btn btn-sm btn-kindly-primary" data-bs-toggle="modal" data-bs-target="#rubricModal" onclick="openRubric('${sub.name}', 0, this, '${subId}')">
               <i class="bi bi-ui-checks"></i> Evaluate Now
             </button>`;
             statusHtml = `<span class="status-badge status-pending">Pending</span>`;
@@ -272,15 +299,15 @@
         }
         
         let quizHtml = '<span class="text-muted2 fst-italic">Not Submitted</span>';
-        if (sub.quiz_score !== null) {
+        if (sub.quiz_score !== null && sub.quiz_score !== undefined) {
           quizHtml = `<span class="badge ${sub.quiz_score >= 70 ? 'bg-success' : 'bg-warning'} fs-6">${sub.quiz_score} / 100</span>`;
         }
         
-        const timeStr = new Date(sub.submitted_at).toLocaleString();
+        const timeStr = sub.submitted_at ? new Date(sub.submitted_at).toLocaleString() : 'Recently';
         
         tr.innerHTML = `
           <td>
-            <div class="fw-bold text-dark">${sub.name} <span class="text-muted" style="font-weight:normal; font-size:0.8rem">(${sub.class_name})</span></div>
+            <div class="fw-bold text-dark">${sub.name} <span class="text-muted" style="font-weight:normal; font-size:0.8rem">(${sub.class_name || '-'})</span></div>
             <div class="text-muted2" style="font-size:0.8rem;">Submitted: ${timeStr}</div>
           </td>
           <td>${quizHtml}</td>
@@ -288,7 +315,7 @@
           <td>${gradingHtml}</td>
           <td>${statusHtml}</td>
           <td>
-            <button class="btn btn-sm btn-danger text-white border-0 shadow-sm" onclick="deleteSubmission(${sub.id}, this)" title="Delete"><i class="bi bi-trash-fill"></i></button>
+            <button class="btn btn-sm btn-danger text-white border-0 shadow-sm" onclick="deleteSubmission('${subId}', this)" title="Delete"><i class="bi bi-trash-fill"></i></button>
           </td>
         `;
         tableBody.appendChild(tr);
@@ -303,7 +330,7 @@
   function updateStats() {
     const tableBody = document.getElementById('voiceTableBody');
     const rows = tableBody.querySelectorAll('tr');
-    let total = rows.length;
+    let total = allSubmissions.length;
     let pending = tableBody.querySelectorAll('.status-pending').length;
     let graded = tableBody.querySelectorAll('.status-graded').length;
 
@@ -313,23 +340,29 @@
   }
 
   async function deleteSubmission(id, btnElement) {
-    if(confirm("Are you sure you want to delete this submission from the database?")) {
+    if(confirm("Are you sure you want to delete this submission?")) {
       try {
-        if (window.location.protocol === 'file:') {
-          // Can't reliably delete by DB ID in local mode, just clear mock for demo
-          localStorage.removeItem('kindly_mock_submissions');
-        } else {
+        // Delete from local storage
+        let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        localSubs = localSubs.filter(s => String(s.id) !== String(id) && encodeURIComponent(s.name) !== String(id));
+        localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
+
+        allSubmissions = allSubmissions.filter(s => String(s.id) !== String(id) && encodeURIComponent(s.name) !== String(id));
+
+        // Delete from API if online
+        if (window.location.protocol !== 'file:') {
           await fetch('/api/submissions', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id })
-          });
+          }).catch(e => console.warn(e));
         }
+
         const tr = btnElement.closest('tr');
         if (tr) tr.remove();
         updateStats();
       } catch(e) {
-        alert("Failed to delete from database");
+        alert("Failed to delete submission");
       }
     }
   }
@@ -343,7 +376,7 @@
     document.getElementById('modalStudentName').innerText = studentName;
     
     // Find the submission to show topic and draft
-    const sub = allSubmissions.find(s => s.id === dbId);
+    const sub = allSubmissions.find(s => String(s.id) === String(dbId) || s.name === studentName);
     if (sub) {
       document.getElementById('modalTopic').innerText = sub.topic || '-';
       document.getElementById('modalScriptDraft').innerText = sub.script_draft || 'No draft provided by the student.';
@@ -386,21 +419,29 @@
     const finalScoreText = document.getElementById('finalScore').innerText;
     const studentName = document.getElementById('modalStudentName').innerText;
 
-    if (currentDbId) {
+    if (currentDbId || studentName) {
       try {
         const btnSave = document.querySelector('#rubricModal .btn-kindly-primary');
         const originalText = btnSave.innerHTML;
         btnSave.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Saving...';
         btnSave.disabled = true;
 
-        if (window.location.protocol === 'file:') {
-          let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
-          let subIndex = localSubs.findIndex(s => s.name === studentName);
-          if (subIndex > -1) {
-            localSubs[subIndex].individual_score = parseInt(finalScoreText);
-            localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
-          }
-        } else {
+        // 1. Always update local storage
+        let localSubs = JSON.parse(localStorage.getItem('kindly_mock_submissions')) || [];
+        let subIndex = localSubs.findIndex(s => s.name === studentName || String(s.id) === String(currentDbId));
+        if (subIndex > -1) {
+          localSubs[subIndex].individual_score = parseInt(finalScoreText);
+          localStorage.setItem('kindly_mock_submissions', JSON.stringify(localSubs));
+        }
+
+        // Also update memory in allSubmissions
+        let memSub = allSubmissions.find(s => s.name === studentName || String(s.id) === String(currentDbId));
+        if (memSub) {
+          memSub.individual_score = parseInt(finalScoreText);
+        }
+
+        // 2. Update via API if online
+        if (window.location.protocol !== 'file:') {
           await fetch('/api/submissions', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -408,7 +449,7 @@
               id: currentDbId,
               individualScore: parseInt(finalScoreText)
             })
-          });
+          }).catch(e => console.warn(e));
         }
 
         btnSave.innerHTML = originalText;
@@ -432,8 +473,15 @@
           
           updateStats();
         }
+
+        // Close Modal
+        const rubricModalEl = document.getElementById('rubricModal');
+        const modal = bootstrap.Modal.getInstance(rubricModalEl);
+        if (modal) modal.hide();
+
       } catch(e) {
-        alert("Failed to save grade to database!");
+        alert("Failed to save grade");
+        console.error(e);
       }
     }
   }
